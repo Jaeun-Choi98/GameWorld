@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Networking;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -17,13 +18,22 @@ public class LoginManager : MonoBehaviour
   Color32 color2;
   bool colorSwitch = false;
   bool waitFlag = true;
+
+  private class User
+  {
+    public string email;
+    public string passwd;
+    
+  }
+
+
   private void Start()
   {
     notify.text = "";
     color1 = new Color32(207, 163, 163, 255);
     color2 = new Color32(222, 210, 210, 255);
     icon.color = color1;
-    
+
   }
 
   // Update is called once per frame
@@ -53,49 +63,65 @@ public class LoginManager : MonoBehaviour
 
   public void SignUp()
   {
-    /*if (!CheckIdOrPasswd(id.text, password.text))
+    if (!CheckIdOrPasswd(id.text, password.text))
     {
       return;
-    }*/
-    if (!PlayerPrefs.HasKey(id.text))
-    {
-      PlayerPrefs.SetString(id.text, password.text);
-      notify.text = "¾ÆÀÌµğ »ı¼ºÀÌ ¿Ï·áµÆ½À´Ï´Ù.";
     }
-    else
-    {
-      notify.text = "ÀÌ¹Ì Á¸ÀçÇÏ´Â ¾ÆÀÌµğÀÔ´Ï´Ù.";
-    }
+
   }
 
   public void SignIn()
   {
-    /*if (!CheckIdOrPasswd(id.text, password.text))
+    StartCoroutine(CorutineSignIn());
+  }
+
+  IEnumerator CorutineSignIn()
+  {
+    if (!CheckIdOrPasswd(id.text, password.text))
     {
-      return;
-    }*/
-    string pass = PlayerPrefs.GetString(id.text);
-    if (password.text == pass)
+      yield break;
+    }
+
+    string url = "http://localhost:8080/players/signin";
+    User user = new User();
+    user.email = id.text;
+    user.passwd = password.text;
+    string jsonStr = JsonUtility.ToJson(user);
+    //Debug.Log("Request JSON: " + jsonStr);
+
+    UnityWebRequest request = new UnityWebRequest(url, "POST");
+    byte[] jsonToSend = new System.Text.UTF8Encoding().GetBytes(jsonStr);
+    request.uploadHandler = new UploadHandlerRaw(jsonToSend);
+    request.downloadHandler = new DownloadHandlerBuffer();
+    request.SetRequestHeader("Content-Type", "application/json");
+
+    yield return request.SendWebRequest();
+
+    if (request.result == UnityWebRequest.Result.ConnectionError || request.result == UnityWebRequest.Result.ProtocolError)
     {
-      SceneManager.LoadScene(1);
+      Debug.LogError("Error: " + request.error);
+      notify.text = request.error;
     }
     else
     {
-      notify.text = "ÀÔ·ÂÇÑ ¾ÆÀÌµğ ¶Ç´Â ÆĞ½º¿öµå°¡ ÀÏÄ¡ÇÏÁö ¾Ê½À´Ï´Ù.";
+      string jsonResponse = request.downloadHandler.text;
+      Debug.Log("Response: " + jsonResponse);
+      
+      SceneManager.LoadScene(1);
     }
   }
 
-  /*public bool CheckIdOrPasswd(string id, string pwd)
+  public bool CheckIdOrPasswd(string id, string pwd)
   {
     if (id == "" || pwd == "")
     {
-      notify.text = "¾ÆÀÌµğ ¶Ç´Â ÆĞ½º¿öµå¸¦ ÀÔ·ÂÇÏ¼¼¿ä.";
+      notify.text = "ì´ë©”ì¼ ë˜ëŠ” ë¹„ë°€ë²ˆí˜¸ë¥¼ ì…ë ¥í•˜ì„¸ìš”.";
       return false;
     }
     else
     {
       return true;
     }
-  }*/
+  }
 }
 
