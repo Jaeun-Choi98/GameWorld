@@ -106,7 +106,9 @@ public class LoginManager : MonoBehaviour
     {
       string jsonResponse = request.downloadHandler.text;
       Debug.Log("Response: " + jsonResponse);
-      
+
+      // PlatformScene: 2
+      LoadingManager.nextSceneNumber = 2;
       SceneManager.LoadScene(1);
     }
   }
