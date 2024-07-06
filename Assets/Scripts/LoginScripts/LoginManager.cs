@@ -23,7 +23,7 @@ public class LoginManager : MonoBehaviour
   {
     public string email;
     public string passwd;
-    
+    public int userId;
   }
 
 
@@ -105,10 +105,12 @@ public class LoginManager : MonoBehaviour
     else
     {
       string jsonResponse = request.downloadHandler.text;
-      Debug.Log("Response: " + jsonResponse);
-
+      int usreId = JsonUtility.FromJson<User>(jsonResponse).userId;
+      //Debug.Log("Response: " + request.downloadHandler.text);
+      
       // PlatformScene: 2
       LoadingManager.nextSceneNumber = 2;
+      PlayerData.userId = usreId;
       SceneManager.LoadScene(1);
     }
   }

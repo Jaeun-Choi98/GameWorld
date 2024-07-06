@@ -43,8 +43,7 @@ func (h *Handler) GetPlayerInfo(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": result.Error})
 		return
 	}
-
-	c.JSON(http.StatusOK, player)
+	c.JSON(http.StatusOK, player[0])
 }
 
 func (h *Handler) SignIn(c *gin.Context) {
