@@ -7,23 +7,51 @@ public class CamManager : MonoBehaviour
   [SerializeField]
   private GameObject target;
 
-  private float r = 4f;  
-  private float rOffset = 3f;    
+  private float r = 4f;
+  private float rOffset = 3f;
   private float rotSpeed = 150f;
   private float yAngle = 0f;
   private float xAngle = 0f;
   private LayerMask collisionMask;
 
+  // 고정 시점을 위한 변수
+  public VeiwPoint veiwPoint;
+  private float svYAngle;
+  private float svXAngle;
+
+  public enum VeiwPoint
+  {
+    fix,
+    dynamic
+  }
+
   void Start()
   {
     target = GameObject.Find("Player");
     collisionMask = LayerMask.GetMask("Envirionment", "Player");
+    veiwPoint = VeiwPoint.dynamic;
   }
 
   void Update()
   {
     Rotate();
     CamPosition();
+    if (Input.GetKey(KeyCode.RightAlt))
+    {
+      if(veiwPoint == VeiwPoint.dynamic)
+      {
+        veiwPoint = VeiwPoint.fix;
+        svYAngle = yAngle;
+        svXAngle = xAngle;
+      }
+      //FixedCamPosition();
+    }
+    if(Input.GetKeyUp(KeyCode.RightAlt) && veiwPoint == VeiwPoint.fix)
+    {
+      veiwPoint = VeiwPoint.dynamic;
+      yAngle = svYAngle;
+      xAngle = svXAngle;
+    }
   }
 
   void Rotate()
@@ -35,6 +63,14 @@ public class CamManager : MonoBehaviour
     float dx = Input.GetAxis("Mouse X");
     xAngle += dx * rotSpeed * Time.deltaTime;
   }
+
+  /*void FixedCamPosition()
+  {
+    transform.position = target.transform.position;
+    transform.position += target.transform.TransformDirection(new Vector3(0, 3f, -4f));
+    Quaternion cameraRotation = Quaternion.Euler(yAngle, xAngle, 0f); // X 축 회전만 적용
+    transform.rotation = cameraRotation;
+  }*/
 
   void CamPosition()
   {

@@ -10,6 +10,8 @@ public class PlayerMove : MonoBehaviour
   private float rotSpeed = 150f;
   private float xAngle = 0f;
 
+  CamManager camManager;
+
   private LayerMask collisionMask;
   [SerializeField]
   private bool isJump = false;
@@ -21,6 +23,7 @@ public class PlayerMove : MonoBehaviour
     playerData = GetComponent<PlayerData>();
     col = GetComponent<Collider>();
     collisionMask = LayerMask.GetMask("Envirionment", "Player");
+    camManager = Camera.main.GetComponent<CamManager>();
   }
 
   void Update()
@@ -33,6 +36,7 @@ public class PlayerMove : MonoBehaviour
   {
     Move();
   }
+
   void Move()
   {
 
@@ -40,16 +44,16 @@ public class PlayerMove : MonoBehaviour
     float v = Input.GetAxis("Vertical");
 
     Vector3 dir = new Vector3(h, 0, v);
-    dir.Normalize();
+    //dir.Normalize();
     // 오브젝트의 로컬 좌표계 -> 월드 좌표계로 변환
     dir = transform.TransformDirection(dir);
     if (isJump)
     {
-      rb.MovePosition(rb.position + dir * playerData.speed * Time.deltaTime * 0.6f);
+      rb.MovePosition(rb.position + dir * playerData.speed * Time.deltaTime * 0.65f);
     }
     else
     {
-      rb.MovePosition(rb.position + dir * playerData.speed * Time.deltaTime);
+      rb.MovePosition(rb.position + dir * playerData.speed * Time.deltaTime * 0.9f);
     }
 
     //rb.AddForce(dir*playerData.speed*Time.deltaTime,ForceMode.Impulse);
@@ -58,6 +62,10 @@ public class PlayerMove : MonoBehaviour
 
   private void Rotate()
   {
+    if(camManager.veiwPoint == CamManager.VeiwPoint.fix)
+    {
+      return;
+    }
     /*float dy = Input.GetAxis("Mouse Y");
     y -= dy * rotSpeed * Time.deltaTime;
     y = Mathf.Clamp(y, -90f, 90f);*/
@@ -92,7 +100,7 @@ public class PlayerMove : MonoBehaviour
       isJump = true;
     }
 
-    
+
   }
 
   private bool CheckCollisionBelow()
