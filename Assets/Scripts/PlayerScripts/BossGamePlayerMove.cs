@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerMove : MonoBehaviour
+public class BossGamePlayerMove : MonoBehaviour
 {
   private float h, v;
 
@@ -12,7 +12,7 @@ public class PlayerMove : MonoBehaviour
   private float rotSpeed = 150f;
   private float xAngle = 0f;
 
-  CamManager camManager;
+  BossGameCamManager camManager;
 
   private LayerMask collisionMask;
   [SerializeField]
@@ -31,12 +31,16 @@ public class PlayerMove : MonoBehaviour
     playerData = GetComponent<PlayerData>();
     col = GetComponent<Collider>();
     collisionMask = LayerMask.GetMask("Envirionment", "Player");
-    camManager = Camera.main.GetComponent<CamManager>();
+    camManager = Camera.main.GetComponent<BossGameCamManager>();
     animator = GetComponentInChildren<Animator>();
   }
 
   void Update()
   {
+    if(BoasGameManager.Instance.gameState != BoasGameManager.GameState.Run)
+    {
+      return;
+    }
     Rotate();
     Jump();
     Roll();
@@ -144,7 +148,7 @@ public class PlayerMove : MonoBehaviour
 
   private void Rotate()
   {
-    if (camManager.veiwPoint == CamManager.VeiwPoint.fix)
+    if (camManager.veiwPoint == BossGameCamManager.VeiwPoint.fix)
     {
       return;
     }
