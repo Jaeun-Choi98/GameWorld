@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class BoasGameManager : MonoBehaviour
@@ -17,7 +18,7 @@ public class BoasGameManager : MonoBehaviour
   }
 
   public GameState gameState;
-
+  public GameObject gameOption;
   [SerializeField]
   private Text gameSateText;
 
@@ -38,6 +39,15 @@ public class BoasGameManager : MonoBehaviour
     StartCoroutine(ReadToStart());
   }
 
+  private void Update()
+  {
+    if (Input.GetKeyDown(KeyCode.Escape) && gameState == GameState.Run)
+    {
+      OpenOptionWindow();
+    }
+    // 만약 플레이어의 hp가 0이하라면, 게임 상태 => 게임 오버
+  }
+
   IEnumerator ReadToStart()
   {
     yield return new WaitForSeconds(2f);
@@ -45,5 +55,32 @@ public class BoasGameManager : MonoBehaviour
     yield return new WaitForSeconds(0.5f);
     gameSateText.gameObject.SetActive(false);
     gameState = GameState.Run;
+  }
+
+  public void OpenOptionWindow()
+  {
+    gameOption.SetActive(true);
+    gameState = GameState.Pause;
+    Time.timeScale = 0f;
+  }
+
+  public void CloseOptionWindow()
+  {
+    gameOption.SetActive(false);
+    Time.timeScale = 1f;
+    gameState = GameState.Run;
+  }
+
+  public void RestartGame()
+  {
+    Time.timeScale = 1f;
+    SceneManager.LoadScene(3);
+  }
+
+  public void QuitGame()
+  {
+    Time.timeScale = 1f;
+    LoadingManager.nextSceneNumber = 2;
+    SceneManager.LoadScene(1);
   }
 }

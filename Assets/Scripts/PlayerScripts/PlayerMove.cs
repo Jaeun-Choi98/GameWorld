@@ -22,7 +22,7 @@ public class PlayerMove : MonoBehaviour
 
   Animator animator;
 
-
+  
 
   void Start()
   {
@@ -30,7 +30,7 @@ public class PlayerMove : MonoBehaviour
     rb.freezeRotation = true;
     playerData = GetComponent<PlayerData>();
     col = GetComponent<Collider>();
-    collisionMask = LayerMask.GetMask("Envirionment", "Player");
+    collisionMask = LayerMask.GetMask("Envirionment", "Player", "Potal");
     camManager = Camera.main.GetComponent<CamManager>();
     animator = GetComponentInChildren<Animator>();
   }
@@ -51,7 +51,7 @@ public class PlayerMove : MonoBehaviour
 
   void Roll()
   {
-    if (Input.GetKeyDown(KeyCode.LeftShift) && !isRoll && (h != 0 || v != 0))
+    if (Input.GetKeyDown(KeyCode.LeftShift) && !isRoll && (h != 0 || v != 0) && !isJump)
     {
       isRoll = true;
       StartCoroutine(RollProcess());

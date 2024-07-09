@@ -28,7 +28,7 @@ public class LoadingManager : MonoBehaviour
 
   IEnumerator TransitionNextScene()
   {
-    AsyncOperation ao = SceneManager.LoadSceneAsync(nextSceneNumber);
+    AsyncOperation ao = SceneManager.LoadSceneAsync(nextSceneNumber); 
     ao.allowSceneActivation = false;
 
     while (!ao.isDone)

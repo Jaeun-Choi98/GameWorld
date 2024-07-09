@@ -12,6 +12,7 @@ public class BossGamePlayerMove : MonoBehaviour
   private float rotSpeed = 150f;
   private float xAngle = 0f;
 
+  [SerializeField]
   BossGameCamManager camManager;
 
   private LayerMask collisionMask;
@@ -37,7 +38,7 @@ public class BossGamePlayerMove : MonoBehaviour
 
   void Update()
   {
-    if(BoasGameManager.Instance.gameState != BoasGameManager.GameState.Run)
+    if (BoasGameManager.Instance.gameState != BoasGameManager.GameState.Run)
     {
       return;
     }
@@ -50,12 +51,16 @@ public class BossGamePlayerMove : MonoBehaviour
 
   void FixedUpdate()
   {
+    if (BoasGameManager.Instance.gameState != BoasGameManager.GameState.Run)
+    {
+      return;
+    }
     Move();
   }
 
   void Roll()
   {
-    if (Input.GetKeyDown(KeyCode.LeftShift) && !isRoll && (h != 0 || v != 0))
+    if (Input.GetKeyDown(KeyCode.LeftShift) && !isRoll && (h != 0 || v != 0) && !isJump)
     {
       isRoll = true;
       StartCoroutine(RollProcess());
