@@ -34,24 +34,28 @@ public class BoasGameManager : MonoBehaviour
   {
     gameState = GameState.Ready;
     gameSateText = GameObject.Find("Text GameState").GetComponent<Text>();
-    gameSateText.text = "Ready...";
+    gameSateText.text = "BossGame!";
     //gameSateText.color = new Color32(255, 185, 0, 255);
     StartCoroutine(ReadToStart());
   }
 
   private void Update()
   {
-    if (Input.GetKeyDown(KeyCode.Escape) && gameState == GameState.Run)
+    if (Input.GetKeyDown(KeyCode.Escape) && gameState == GameState.Pause)
+    {
+      CloseOptionWindow();
+    }else if (Input.GetKeyDown(KeyCode.Escape) && gameState == GameState.Run)
     {
       OpenOptionWindow();
     }
     // 만약 플레이어의 hp가 0이하라면, 게임 상태 => 게임 오버
+    
   }
 
   IEnumerator ReadToStart()
   {
-    yield return new WaitForSeconds(2f);
-    gameSateText.text = "Go!";
+    yield return new WaitForSeconds(6f);
+    gameSateText.text = "Start!";
     yield return new WaitForSeconds(0.5f);
     gameSateText.gameObject.SetActive(false);
     gameState = GameState.Run;

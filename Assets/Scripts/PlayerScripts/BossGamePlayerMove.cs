@@ -23,7 +23,7 @@ public class BossGamePlayerMove : MonoBehaviour
 
   Animator animator;
 
-
+  public bool isJumpMotion = false;
 
   void Start()
   {
@@ -173,8 +173,9 @@ public class BossGamePlayerMove : MonoBehaviour
 
   private void Jump()
   {
-    if (Input.GetButtonDown("Jump") && !isJump)
+    if (Input.GetButtonDown("Jump") && !isJump && !isJumpMotion)
     {
+      isJumpMotion = true;
       animator.SetTrigger("RunToJump");
       rb.AddForce(Vector3.up * playerData.jumpPower * 2f, ForceMode.Impulse);
     }
