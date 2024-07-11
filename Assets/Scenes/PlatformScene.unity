@@ -1826,6 +1826,7 @@ MonoBehaviour:
   speed: 0
   money: 0
   playerName: 
+  hp: 20
 --- !u!114 &1919391555
 MonoBehaviour:
   m_ObjectHideFlags: 0

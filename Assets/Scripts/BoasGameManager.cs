@@ -14,6 +14,7 @@ public class BoasGameManager : MonoBehaviour
     Ready,
     Run,
     Pause,
+    Victory,
     GameOver
   }
 

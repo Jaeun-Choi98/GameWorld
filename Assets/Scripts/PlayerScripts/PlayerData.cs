@@ -17,6 +17,11 @@ public class PlayerData : MonoBehaviour
   public int money = 0;
   public string playerName = null;
 
+  // DB서버에 저장되지 않는 데이터
+  public float hp = 20f;
+
+  PlayerState playerState;
+
   public class PlayerInfo
   {
     public int Speed;
@@ -34,8 +39,13 @@ public class PlayerData : MonoBehaviour
 
   private void Start()
   {
+    playerState = GetComponent<PlayerState>();
     //StartCoroutine(LoadPlayerInfo());
     devModeInit();
+    if(playerState != null)
+    {
+      playerState.PlayerStateLoad(20f, 5, 10, 1000);
+    }
   }
   
   void devModeInit()

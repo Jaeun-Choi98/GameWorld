@@ -8,7 +8,7 @@ public class BossGamePlayerMove : MonoBehaviour
 
   Rigidbody rb;
   Collider col;
-  PlayerData playerData;
+  PlayerState playerState;
   private float rotSpeed = 150f;
   private float xAngle = 0f;
 
@@ -29,7 +29,7 @@ public class BossGamePlayerMove : MonoBehaviour
   {
     rb = GetComponent<Rigidbody>();
     rb.freezeRotation = true;
-    playerData = GetComponent<PlayerData>();
+    playerState = GetComponent<PlayerState>();
     col = GetComponent<Collider>();
     collisionMask = LayerMask.GetMask("Envirionment", "Player");
     camManager = Camera.main.GetComponent<BossGameCamManager>();
@@ -140,11 +140,11 @@ public class BossGamePlayerMove : MonoBehaviour
     dir = transform.TransformDirection(dir);
     if (isJump)
     {
-      rb.MovePosition(rb.position + dir * playerData.speed * Time.deltaTime * 0.65f);
+      rb.MovePosition(rb.position + dir * playerState.speed * Time.deltaTime * 0.65f);
     }
     else
     {
-      rb.MovePosition(rb.position + dir * playerData.speed * Time.deltaTime * 0.8f);
+      rb.MovePosition(rb.position + dir * playerState.speed * Time.deltaTime * 0.8f);
     }
 
     //rb.AddForce(dir*playerData.speed*Time.deltaTime,ForceMode.Impulse);
@@ -177,7 +177,7 @@ public class BossGamePlayerMove : MonoBehaviour
     {
       isJumpMotion = true;
       animator.SetTrigger("RunToJump");
-      rb.AddForce(Vector3.up * playerData.jumpPower * 2f, ForceMode.Impulse);
+      rb.AddForce(Vector3.up * playerState.jumpPower * 2f, ForceMode.Impulse);
     }
 
     if (CheckCollisionBelow())

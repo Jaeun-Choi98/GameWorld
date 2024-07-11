@@ -168,7 +168,7 @@ public class PlayerMove : MonoBehaviour
     {
       isJumpMotion = true;
       animator.SetTrigger("RunToJump");
-      rb.AddForce(Vector3.up * playerData.jumpPower * 2f, ForceMode.Impulse);
+      rb.AddForce(Vector3.up * playerData.jumpPower * 1.5f, ForceMode.Impulse);
     }
 
     if (CheckCollisionBelow())
@@ -180,7 +180,7 @@ public class PlayerMove : MonoBehaviour
     }
     else
     {
-      rb.AddForce(Vector3.down * 3f, ForceMode.Acceleration);
+      rb.AddForce(Vector3.down * 3.3f, ForceMode.Acceleration);
       isJump = true;
     }
 
