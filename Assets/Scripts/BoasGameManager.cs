@@ -23,6 +23,11 @@ public class BoasGameManager : MonoBehaviour
   [SerializeField]
   private Text gameSateText;
 
+  [SerializeField]
+  private PlayerState playerState;
+  [SerializeField]
+  private EnemyFSM enemyFSM;
+
   private void Awake()
   {
     if (Instance == null)
@@ -36,6 +41,8 @@ public class BoasGameManager : MonoBehaviour
     gameState = GameState.Ready;
     gameSateText = GameObject.Find("Text GameState").GetComponent<Text>();
     gameSateText.text = "BossGame!";
+    playerState = GameObject.Find("Player").GetComponent<PlayerState>();
+    enemyFSM = GameObject.Find("Enemy").GetComponent<EnemyFSM>();
     //gameSateText.color = new Color32(255, 185, 0, 255);
     StartCoroutine(ReadToStart());
   }
@@ -45,12 +52,44 @@ public class BoasGameManager : MonoBehaviour
     if (Input.GetKeyDown(KeyCode.Escape) && gameState == GameState.Pause)
     {
       CloseOptionWindow();
-    }else if (Input.GetKeyDown(KeyCode.Escape) && gameState == GameState.Run)
+    }
+    else if (Input.GetKeyDown(KeyCode.Escape) && gameState == GameState.Run)
     {
       OpenOptionWindow();
     }
     // 만약 플레이어의 hp가 0이하라면, 게임 상태 => 게임 오버
-    
+    if (playerState.curHp <= 0f)
+    {
+      StartCoroutine(RunToGameover());
+    }
+    else if (enemyFSM.curHp <= 0f)
+    {
+      StartCoroutine(RunToVictory()); ;
+    }
+  }
+
+  IEnumerator RunToGameover()
+  {
+    gameState = GameState.GameOver;
+    gameSateText.text = "Game Over";
+    gameSateText.gameObject.SetActive(true);
+    Time.timeScale = 0.3f;
+    yield return new WaitForSeconds(1f);
+    Time.timeScale = 1f;
+    LoadingManager.nextSceneNumber = 2;
+    SceneManager.LoadScene(1);
+  }
+
+  IEnumerator RunToVictory()
+  {
+    gameState = GameState.Victory;
+    gameSateText.text = "Victory";
+    gameSateText.gameObject.SetActive(true);
+    Time.timeScale = 0.3f;
+    yield return new WaitForSeconds(1f);
+    Time.timeScale = 1f;
+    LoadingManager.nextSceneNumber = 2;
+    SceneManager.LoadScene(1);
   }
 
   IEnumerator ReadToStart()

@@ -164,7 +164,7 @@ public class PlayerMove : MonoBehaviour
 
   private void Jump()
   {
-    if (Input.GetButtonDown("Jump") && !isJump && !isJumpMotion)
+    if (Input.GetButtonDown("Jump") && !isJump && !isJumpMotion && !isRoll)
     {
       isJumpMotion = true;
       animator.SetTrigger("RunToJump");

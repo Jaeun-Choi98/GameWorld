@@ -19,21 +19,21 @@ public class EnemyFSM : MonoBehaviour
 
   GameObject player;
   Rigidbody rb;
-  
+
   [SerializeField]
   private float findDistance = 20f;
   [SerializeField]
-  private float limitMoveDistance = 20f;
+  private float limitMoveDistance = 40f;
   [SerializeField]
   private float attackDistance = 3f;
   [SerializeField]
-  private float moveSpeed = 1f;
+  private float moveSpeed = 3f;
   [SerializeField]
   private float hp = 30f;
   [SerializeField]
   private Slider enemyHpSlider;
-  
-  private float curHp;
+
+  public float curHp;
 
   private Vector3 originPos;
   private Quaternion originRot;
@@ -52,7 +52,7 @@ public class EnemyFSM : MonoBehaviour
 
   void Update()
   {
-    switch(state)
+    switch (state)
     {
       case EnemyState.Idle:
         Idle();
@@ -78,7 +78,7 @@ public class EnemyFSM : MonoBehaviour
 
   void Idle()
   {
-    if(Vector3.Distance(transform.position, player.transform.position) < findDistance)
+    if (Vector3.Distance(transform.position, player.transform.position) < findDistance)
     {
       state = EnemyState.Move;
       Debug.Log("idle -> move");
@@ -89,18 +89,18 @@ public class EnemyFSM : MonoBehaviour
 
   void Move()
   {
-    if(Vector3.Distance(transform.position,originPos) > limitMoveDistance)
+    if (Vector3.Distance(transform.position, originPos) > limitMoveDistance)
     {
       state = EnemyState.Return;
       Debug.Log("move -> return");
     }
-    else if(Vector3.Distance(transform.position, player.transform.position) > attackDistance)
+    else if (Vector3.Distance(transform.position, player.transform.position) > attackDistance)
     {
       // 계속 이동
       Vector3 dir = (player.transform.position - transform.position).normalized;
-      rb.MovePosition(rb.position + dir*moveSpeed*Time.deltaTime);
+      rb.MovePosition(rb.position + dir * moveSpeed * Time.deltaTime);
       transform.forward = dir;
-    
+
     }
     else
     {
@@ -118,10 +118,10 @@ public class EnemyFSM : MonoBehaviour
 
   void Attack()
   {
-    if(Vector3.Distance(transform.position, player.transform.position) < attackDistance)
+    if (Vector3.Distance(transform.position, player.transform.position) < attackDistance)
     {
       currentTime += Time.deltaTime;
-      if(currentTime > attackDelay)
+      if (currentTime > attackDelay)
       {
         // 공격 애니메이션
         anim.SetTrigger("StartAttack");
@@ -144,7 +144,7 @@ public class EnemyFSM : MonoBehaviour
 
   void Return()
   {
-    if(Vector3.Distance(transform.position, originPos) > 0.1f)
+    if (Vector3.Distance(transform.position, originPos) > 0.1f)
     {
       Vector3 dir = (originPos - transform.position).normalized;
       rb.MovePosition(rb.position + dir * moveSpeed * Time.deltaTime);
@@ -160,18 +160,18 @@ public class EnemyFSM : MonoBehaviour
       Debug.Log("return -> idle");
       // 애님 대기 상태
       anim.SetTrigger("MoveToIdle");
-    } 
+    }
   }
 
   public void AttackEnemy(float power)
   {
-    if(state == EnemyState.Damaged || state == EnemyState.Die)
+    if (state == EnemyState.Damaged || state == EnemyState.Die)
     {
       return;
     }
     curHp -= power;
 
-    if(hp > 0f)
+    if (curHp > 0f)
     {
       state = EnemyState.Damaged;
       // damaged 애니메이션

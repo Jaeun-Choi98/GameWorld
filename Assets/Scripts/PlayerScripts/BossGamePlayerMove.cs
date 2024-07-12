@@ -16,14 +16,18 @@ public class BossGamePlayerMove : MonoBehaviour
   BossGameCamManager camManager;
 
   private LayerMask collisionMask;
-  [SerializeField]
-  private bool isJump = false;
-  [SerializeField]
-  private bool isRoll = false;
+  
+  public bool isJump = false;
+
+  // 만약 구르기 상태라면 AttackPlayer 적용 x ( EnemyAnimEvent 에서 사용 됨. )
+  public bool isRoll = false;
 
   Animator animator;
 
   public bool isJumpMotion = false;
+
+  // 공격 상태 시 구르기 및 점프 적용 x 
+  PlayerAttack playerAttack;
 
   void Start()
   {
@@ -34,6 +38,7 @@ public class BossGamePlayerMove : MonoBehaviour
     collisionMask = LayerMask.GetMask("Envirionment", "Player");
     camManager = Camera.main.GetComponent<BossGameCamManager>();
     animator = GetComponentInChildren<Animator>();
+    playerAttack = GetComponent<PlayerAttack>();
   }
 
   void Update()
@@ -43,6 +48,11 @@ public class BossGamePlayerMove : MonoBehaviour
       return;
     }
     Rotate();
+    // Damaged 상태일 시 움직임 x but 회전은 가능
+    if (playerState.isDamaged)
+    {
+      return;
+    }
     Jump();
     Roll();
     // 애님으로 인해 틀어진 position을 맞추는 작업
@@ -55,12 +65,18 @@ public class BossGamePlayerMove : MonoBehaviour
     {
       return;
     }
+    // Damaged 상태일 시 움직임 x
+    if (playerState.isDamaged)
+    {
+      return;
+    }
     Move();
   }
 
   void Roll()
   {
-    if (Input.GetKeyDown(KeyCode.LeftShift) && !isRoll && (h != 0 || v != 0) && !isJump)
+    if (Input.GetKeyDown(KeyCode.LeftShift) && !isRoll && (h != 0 || v != 0) && !isJump 
+      && !playerAttack.isAiming)
     {
       isRoll = true;
       StartCoroutine(RollProcess());
@@ -105,7 +121,8 @@ public class BossGamePlayerMove : MonoBehaviour
     {
       h = -1f;
       v = 1f;
-    }else
+    }
+    else
     {
       h = 0f;
       v = 0f;
@@ -173,11 +190,11 @@ public class BossGamePlayerMove : MonoBehaviour
 
   private void Jump()
   {
-    if (Input.GetButtonDown("Jump") && !isJump && !isJumpMotion)
+    if (Input.GetButtonDown("Jump") && !isJump && !isJumpMotion && !isRoll && !playerAttack.isAiming)
     {
       isJumpMotion = true;
       animator.SetTrigger("RunToJump");
-      rb.AddForce(Vector3.up * playerState.jumpPower * 2f, ForceMode.Impulse);
+      rb.AddForce(Vector3.up * playerState.jumpPower * 1.5f, ForceMode.Impulse);
     }
 
     if (CheckCollisionBelow())
@@ -189,7 +206,7 @@ public class BossGamePlayerMove : MonoBehaviour
     }
     else
     {
-      rb.AddForce(Vector3.down * 3f, ForceMode.Acceleration);
+      rb.AddForce(Vector3.down * 3.3f, ForceMode.Acceleration);
       isJump = true;
     }
 
