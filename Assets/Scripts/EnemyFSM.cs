@@ -106,7 +106,7 @@ public class EnemyFSM : MonoBehaviour
     {
       state = EnemyState.Attack;
       currentTime = attackDelay;
-      print("move -> attack");
+      Debug.Log("move -> attack");
       // 공격 대기 애니메이션
       anim.SetTrigger("MoveToAttackIdle");
     }
@@ -163,6 +163,7 @@ public class EnemyFSM : MonoBehaviour
     }
   }
 
+  // 스킬에 따른 경직 효과 시간도 다르게 넣어주면 좋을 거 같음.
   public void AttackEnemy(float power)
   {
     if (state == EnemyState.Damaged || state == EnemyState.Die)
