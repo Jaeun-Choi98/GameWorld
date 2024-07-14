@@ -7,17 +7,17 @@ using UnityEngine.UI;
 public class LoadingManager : MonoBehaviour
 {
 
-  public static LoadingManager instance;
+  //public static LoadingManager instance;
   public static int nextSceneNumber;
   public Slider loadingBar;
   public Text loadingText;
 
   private void Awake()
   {
-    if (instance == null)
+    /*if (instance == null)
     {
       instance = this;
-    }
+    }*/
   }
 
   // Start is called before the first frame update

@@ -95,6 +95,7 @@ func (h *Handler) SignUp(c *gin.Context) {
 func (h *Handler) SavePlayerInfo(c *gin.Context) {
 	var player models.Player
 	err := c.ShouldBindJSON(&player)
+	log.Println(player)
 	if err != nil {
 		log.Println(err)
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})

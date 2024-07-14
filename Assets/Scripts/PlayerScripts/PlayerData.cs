@@ -21,7 +21,7 @@ public class PlayerData : MonoBehaviour
   public float hp = 20f;
 
   PlayerState playerState;
-
+  PlatformPlayerState platformPlayerState;
   public class PlayerInfo
   {
     public int Speed;
@@ -40,12 +40,17 @@ public class PlayerData : MonoBehaviour
   private void Start()
   {
     playerState = GetComponent<PlayerState>();
-    //StartCoroutine(LoadPlayerInfo());
-    devModeInit();
+    platformPlayerState = GetComponent<PlatformPlayerState>();
+    StartCoroutine(LoadPlayerInfo());
+    /*devModeInit();
     if(playerState != null)
     {
-      playerState.PlayerStateLoad(20f, 5, 10, 1000);
+      playerState.PlayerStateLoad(hp, jumpPower, speed, money);
     }
+    if(platformPlayerState != null)
+    {
+      platformPlayerState.PlatformPlayerStateLoad(speed, money, jumpPower, playerName);
+    }*/
   }
   
   void devModeInit()
@@ -79,6 +84,15 @@ public class PlayerData : MonoBehaviour
       money = playerDTO.playerInfo.Money;
       jumpPower = playerDTO.playerInfo.JumpPower;
       playerId = playerDTO.playerId;
+      hp = 20f;
+      if (playerState != null)
+      {
+        playerState.PlayerStateLoad(hp, jumpPower, speed, money);
+      }
+      if (platformPlayerState != null)
+      {
+        platformPlayerState.PlatformPlayerStateLoad(speed, money, jumpPower, playerName);
+      }
     }
   }
 
