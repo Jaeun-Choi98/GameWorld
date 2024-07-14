@@ -17,6 +17,7 @@ type HandlerInterface interface {
 	GetPlayerInfo(c *gin.Context)
 	SignIn(c *gin.Context)
 	SignUp(c *gin.Context)
+	SavePlayerInfo(c *gin.Context)
 }
 
 type Handler struct {
@@ -89,4 +90,21 @@ func (h *Handler) SignUp(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, user)
+}
+
+func (h *Handler) SavePlayerInfo(c *gin.Context) {
+	var player models.Player
+	err := c.ShouldBindJSON(&player)
+	if err != nil {
+		log.Println(err)
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+	result := h.db.Model(&player).Where("user_id = ? and player_id = ?", player.UserId, player.PlyerId).Update("info", player.PlayerInfo)
+	if result.Error != nil {
+		log.Println(result.Error)
+		c.JSON(http.StatusBadRequest, gin.H{"error": result.Error})
+		return
+	}
+	c.JSON(http.StatusOK, player)
 }
