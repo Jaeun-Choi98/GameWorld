@@ -247,6 +247,7 @@ MonoBehaviour:
   gameSateText: {fileID: 1312229903}
   playerState: {fileID: 0}
   enemyFSM: {fileID: 0}
+  playerData: {fileID: 0}
 --- !u!1 &182583766
 GameObject:
   m_ObjectHideFlags: 0
@@ -1738,6 +1739,7 @@ PlayableDirector:
     value: {fileID: 225973561}
   m_ExposedReferences:
     m_References:
+    - 30b7f4ace13c4554fa3cb8649e985f8f: {fileID: 0}
     - f4934f9f6dccc5345a3f779cabc7ab8e: {fileID: 1401830680}
     - d3d1d7f36c4daee4faf9505d6c363560: {fileID: 570566555}
 --- !u!4 &1205864905

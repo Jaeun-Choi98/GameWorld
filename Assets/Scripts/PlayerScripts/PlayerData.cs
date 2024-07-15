@@ -41,16 +41,16 @@ public class PlayerData : MonoBehaviour
   {
     playerState = GetComponent<PlayerState>();
     platformPlayerState = GetComponent<PlatformPlayerState>();
-    StartCoroutine(LoadPlayerInfo());
-    /*devModeInit();
-    if(playerState != null)
+    //StartCoroutine(LoadPlayerInfo());
+    devModeInit();
+    if (playerState != null)
     {
       playerState.PlayerStateLoad(hp, jumpPower, speed, money);
     }
-    if(platformPlayerState != null)
+    if (platformPlayerState != null)
     {
       platformPlayerState.PlatformPlayerStateLoad(speed, money, jumpPower, playerName);
-    }*/
+    }
   }
   
   void devModeInit()
