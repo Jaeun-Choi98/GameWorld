@@ -18,6 +18,7 @@ public class Player
   public int userId;
   public int playerId;
   public PlayerInfo playerInfo;
+  public Inventory[] inventory;
 }
 
 [System.Serializable]
@@ -29,6 +30,14 @@ public class PlayerInfo
   public string Name;
 }
 
+[System.Serializable]
+public class Inventory
+{
+  public int ItemId;
+  public int Quantity;
+  public string ItemName;
+}
+
 public class Server : MonoBehaviour
 {
   private static Server instance = null;
@@ -38,6 +47,8 @@ public class Server : MonoBehaviour
   public Player player;
 
   public PlayerInfo playerInfo;
+
+  public Inventory[] inventory;
 
   public static Server Instance
   {
@@ -64,6 +75,25 @@ public class Server : MonoBehaviour
     }
   }
 
+  private void Start()
+  {
+    // 실제 실행 시 삭제
+    //InitDev();
+  }
+
+  private void InitDev()
+  {
+    player = new Player();
+    playerInfo = new PlayerInfo();
+    playerInfo.Speed = 10;
+    playerInfo.JumpPower = 5;
+    playerInfo.Name = "cjuTest";
+    playerInfo.Money = 1111;
+    player.userId = 1;
+    player.playerId = 1;
+    player.playerInfo = playerInfo;
+  }
+
   public void SaveBossGameData(int userId, int playerId, string name, int money, int speed, int jumpPower)
   {
     StartCoroutine(SaveBossGameDataProcess(userId, playerId, name, money, speed, jumpPower));
@@ -82,7 +112,7 @@ public class Server : MonoBehaviour
     player.playerId = playerId;
     player.playerInfo = info;
 
-    string url = "localhost:8080/players/save";
+    string url = "localhost:8080/players/save-playerinfo";
     UnityWebRequest request = new UnityWebRequest(url, "POST");
     string jsonStr = JsonConvert.SerializeObject(player);
     byte[] jsonStrToByte = new System.Text.UTF8Encoding().GetBytes(jsonStr);
@@ -128,6 +158,7 @@ public class Server : MonoBehaviour
       player = JsonConvert.DeserializeObject<Player>(jsonResponse);
       playerInfo = player.playerInfo;
       user.userId = userId;
+      inventory = player.inventory;
     }
   }
 }

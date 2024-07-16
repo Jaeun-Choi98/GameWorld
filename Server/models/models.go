@@ -12,10 +12,19 @@ type User struct {
 }
 
 type Player struct {
-	UserId     uint `gorm:"column:user_id" json:"userId"`
-	PlyerId    uint `gorm:"column:player_id" json:"playerId"`
-	PlayerInfo Info `gorm:"column:info;foreignKey:Name;references:player_id" json:"playerInfo"`
+	UserId     uint      `gorm:"column:user_id" json:"userId"`
+	PlyerId    uint      `gorm:"column:player_id" json:"playerId"`
+	PlayerInfo Info      `gorm:"column:info;foreignKey:Name;references:player_id" json:"playerInfo"`
+	Inventory  Inventory `gorm:"column:inventory;foreignKey:ItemId;references:player_id" json:"inventory"`
 }
+
+type InventoryItem struct {
+	ItemId   int
+	Quantity int
+	ItemName string
+}
+
+type Inventory []InventoryItem
 
 type Info struct {
 	Name      string
@@ -33,4 +42,13 @@ func (p Info) Value() (driver.Value, error) {
 func (p *Info) Scan(value interface{}) error {
 	bytes, _ := value.([]byte)
 	return json.Unmarshal(bytes, p)
+}
+
+func (i Inventory) Value() (driver.Value, error) {
+	return json.Marshal(i)
+}
+
+func (i *Inventory) Scan(value interface{}) error {
+	bytes, _ := value.([]byte)
+	return json.Unmarshal(bytes, i)
 }
