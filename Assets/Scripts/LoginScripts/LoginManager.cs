@@ -110,7 +110,7 @@ public class LoginManager : MonoBehaviour
       
       // PlatformScene: 2
       LoadingManager.nextSceneNumber = 2;
-      PlayerData.userId = usreId;
+      Server.Instance.LoadPlayerData(usreId);
       SceneManager.LoadScene(1);
     }
   }

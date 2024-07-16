@@ -3,12 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
-using static PlayerData;
 
-public class BoasGameManager : MonoBehaviour
+public class BossGameManager : MonoBehaviour
 {
 
-  public static BoasGameManager Instance;
+  public static BossGameManager Instance;
 
   public enum GameState
   {
@@ -25,11 +24,11 @@ public class BoasGameManager : MonoBehaviour
   private Text gameSateText;
 
   [SerializeField]
-  private PlayerState playerState;
+  private BossPlayerState bossPlayerState;
   [SerializeField]
   private EnemyFSM enemyFSM;
-  [SerializeField]
-  private PlayerData playerData;
+  /*[SerializeField]
+  private PlayerData playerData;*/
 
   private void Awake()
   {
@@ -44,8 +43,8 @@ public class BoasGameManager : MonoBehaviour
     gameState = GameState.Ready;
     gameSateText = GameObject.Find("Text GameState").GetComponent<Text>();
     gameSateText.text = "BossGame!";
-    playerState = GameObject.Find("Player").GetComponent<PlayerState>();
-    playerData = GameObject.Find("Player").GetComponent<PlayerData>();
+    bossPlayerState = GameObject.Find("Player").GetComponent<BossPlayerState>();
+    //playerData = GameObject.Find("Player").GetComponent<PlayerData>();
     enemyFSM = GameObject.Find("Enemy").GetComponent<EnemyFSM>();
     //gameSateText.color = new Color32(255, 185, 0, 255);
     StartCoroutine(ReadToStart());
@@ -62,7 +61,7 @@ public class BoasGameManager : MonoBehaviour
       OpenOptionWindow();
     }
     // 만약 플레이어의 hp가 0이하라면, 게임 상태 => 게임 오버
-    if (playerState.curHp <= 0f && gameState == GameState.Run)
+    if (bossPlayerState.curHp <= 0f && gameState == GameState.Run)
     {
       StartCoroutine(RunToGameover());
     }
@@ -92,9 +91,10 @@ public class BoasGameManager : MonoBehaviour
     Time.timeScale = 0.3f;
     yield return new WaitForSeconds(1f);
     Time.timeScale = 1f;
-
-    Server.Instance.SaveBossGameData(PlayerData.userId, playerData.playerId,
-      playerData.playerName, playerData.money+200, playerData.speed, playerData.jumpPower);
+    User user = Server.Instance.user;
+    Player player = Server.Instance.player;
+    Server.Instance.SaveBossGameData(user.userId, player.playerId,
+      player.playerInfo.Name, player.playerInfo.Money + 200, player.playerInfo.Speed, player.playerInfo.JumpPower);
     LoadingManager.nextSceneNumber = 2;
     SceneManager.LoadScene(1);
   }

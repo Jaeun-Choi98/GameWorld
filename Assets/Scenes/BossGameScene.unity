@@ -245,9 +245,8 @@ MonoBehaviour:
   gameState: 0
   gameOption: {fileID: 1256310742}
   gameSateText: {fileID: 1312229903}
-  playerState: {fileID: 0}
+  bossPlayerState: {fileID: 0}
   enemyFSM: {fileID: 0}
-  playerData: {fileID: 0}
 --- !u!1 &182583766
 GameObject:
   m_ObjectHideFlags: 0
@@ -1594,6 +1593,67 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &1045995631
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1045995633}
+  - component: {fileID: 1045995632}
+  m_Layer: 0
+  m_Name: Server
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1045995632
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1045995631}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9ece53527fced644b1198c6f0482589, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  user:
+    userId: 0
+    email: 
+    passwd: 
+  player:
+    userId: 0
+    playerId: 0
+    playerInfo:
+      Speed: 0
+      JumpPower: 0
+      Money: 0
+      Name: 
+  playerInfo:
+    Speed: 0
+    JumpPower: 0
+    Money: 0
+    Name: 
+--- !u!4 &1045995633
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1045995631}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 960, y: 540, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1098642805
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2383,7 +2443,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1401830679}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.06303702, y: 0.9362918, z: -0.2253161, w: 0.26194778}
+  m_LocalRotation: {x: 0.06303703, y: 0.9362918, z: -0.2253161, w: 0.26194775}
   m_LocalPosition: {x: -4.61951, y: 6.308581, z: 41.566635}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -3413,7 +3473,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1857309876}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.06303702, y: 0.9362918, z: -0.2253161, w: 0.26194778}
+  m_LocalRotation: {x: 0.06303703, y: 0.9362918, z: -0.2253161, w: 0.26194775}
   m_LocalPosition: {x: -5.16, y: 7.3, z: 43.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -3668,7 +3728,6 @@ GameObject:
   - component: {fileID: 1919391547}
   - component: {fileID: 1919391558}
   - component: {fileID: 1919391553}
-  - component: {fileID: 1919391554}
   - component: {fileID: 1919391555}
   - component: {fileID: 1919391556}
   - component: {fileID: 1919391559}
@@ -3798,24 +3857,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &1919391554
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1919391546}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: acdf496631eead6468df734869172918, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  playerId: 0
-  jumpPower: 0
-  speed: 0
-  money: 0
-  playerName: 
-  hp: 20
 --- !u!114 &1919391555
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3978,10 +4019,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 26ce8aeafea79604081da9bea79fe3bc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hp: 0
-  jumpPower: 0
-  speed: 0
-  money: 0
+  hp: 20
   playerHpSlider: {fileID: 1211475779}
   playerHpText: {fileID: 1666632757}
   curHp: 0
@@ -4730,3 +4768,4 @@ SceneRoots:
   - {fileID: 270323518}
   - {fileID: 206348442}
   - {fileID: 2085997213}
+  - {fileID: 1045995633}

@@ -81,7 +81,7 @@ public class PlayerAttack : MonoBehaviour
 
   void Update()
   {
-    if (BoasGameManager.Instance.gameState != BoasGameManager.GameState.Run)
+    if (BossGameManager.Instance.gameState != BossGameManager.GameState.Run)
     {
       return;
     }

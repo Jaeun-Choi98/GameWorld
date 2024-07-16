@@ -20,6 +20,8 @@ public class PlatformPlayerState : MonoBehaviour
   void Start()
   {
     offset = nameText.transform.position - transform.position;
+    nameText.text = Server.Instance.playerInfo.Name;
+    moneyText.text = "재화: " + Server.Instance.playerInfo.Money;
   }
 
   void Update()
@@ -27,7 +29,7 @@ public class PlatformPlayerState : MonoBehaviour
     nameText.transform.position = gameObject.transform.position + offset;
   }
 
-  public void PlatformPlayerStateLoad(int speed, int money, int jumpPower, string name)
+ /* public void PlatformPlayerStateLoad(int speed, int money, int jumpPower, string name)
   {
     this.speed = speed;
     this.money = money;
@@ -35,5 +37,5 @@ public class PlatformPlayerState : MonoBehaviour
     this.name = name;
     nameText.text = this.name;
     moneyText.text = "재화: " +  this.money.ToString();
-  }
+  }*/
 }

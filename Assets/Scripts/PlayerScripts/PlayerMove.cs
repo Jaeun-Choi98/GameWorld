@@ -8,7 +8,7 @@ public class PlayerMove : MonoBehaviour
 
   Rigidbody rb;
   Collider col;
-  PlayerData playerData;
+  //PlayerData playerData;
   private float rotSpeed = 150f;
   private float xAngle = 0f;
 
@@ -28,7 +28,7 @@ public class PlayerMove : MonoBehaviour
   {
     rb = GetComponent<Rigidbody>();
     rb.freezeRotation = true;
-    playerData = GetComponent<PlayerData>();
+    //playerData = GetComponent<PlayerData>();
     col = GetComponent<Collider>();
     collisionMask = LayerMask.GetMask("Envirionment", "Player", "Potal");
     camManager = Camera.main.GetComponent<CamManager>();
@@ -131,11 +131,11 @@ public class PlayerMove : MonoBehaviour
     dir = transform.TransformDirection(dir);
     if (isJump)
     {
-      rb.MovePosition(rb.position + dir * playerData.speed * Time.deltaTime * 0.65f);
+      rb.MovePosition(rb.position + dir * Server.Instance.playerInfo.Speed * Time.deltaTime * 0.65f);
     }
     else
     {
-      rb.MovePosition(rb.position + dir * playerData.speed * Time.deltaTime * 0.8f);
+      rb.MovePosition(rb.position + dir * Server.Instance.playerInfo.Speed * Time.deltaTime * 0.8f);
     }
 
     //rb.AddForce(dir*playerData.speed*Time.deltaTime,ForceMode.Impulse);
@@ -168,7 +168,7 @@ public class PlayerMove : MonoBehaviour
     {
       isJumpMotion = true;
       animator.SetTrigger("RunToJump");
-      rb.AddForce(Vector3.up * playerData.jumpPower * 1.5f, ForceMode.Impulse);
+      rb.AddForce(Vector3.up * Server.Instance.playerInfo.JumpPower * 1.5f, ForceMode.Impulse);
     }
 
     if (CheckCollisionBelow())

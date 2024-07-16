@@ -139,7 +139,7 @@ public class EnemyFSM : MonoBehaviour
 
   public void EnemyAttackAction()
   {
-    player.GetComponent<PlayerState>().AttackPlayer(attackPower);
+    player.GetComponent<BossPlayerState>().AttackPlayer(attackPower);
   }
 
   void Return()

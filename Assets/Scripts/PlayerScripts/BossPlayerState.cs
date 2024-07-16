@@ -9,15 +9,15 @@ using UnityEngine.UI;
  * -> 플레이어가 Damaged 상태에서는 움직여선 안됨. flag 변수로 BossGamePlayerMove를 제어하는 방법을
  * 사용하면 되지만, 이후 코드 관리나 기능 확장 시 불편할 수도
 */
-public class PlayerState : MonoBehaviour
+public class BossPlayerState : MonoBehaviour
 {
 
-  public float hp;
-  public int jumpPower = 0;
+  public float hp = 20f;
+  /*public int jumpPower = 0;
   public int speed = 0;
-  public int money = 0;
+  public int money = 0;*/
 
-  PlayerData playerData;
+  //PlayerData playerData;
 
   [SerializeField]
   private Slider playerHpSlider;
@@ -34,11 +34,14 @@ public class PlayerState : MonoBehaviour
 
   void Start()
   {
-    playerData = GetComponent<PlayerData>();
+    //playerData = GetComponent<PlayerData>();
     anim = GetComponentInChildren<Animator>();
+    curHp = hp;
+    playerHpSlider.value = (float)curHp / (float)hp;
+    playerHpText.text = string.Format("{0} / {1} ({2}%)", curHp, hp, (curHp * 100) / hp);
   }
 
-  public void PlayerStateLoad(float hp, int jumpPower, int speed, int money)
+  /*public void PlayerStateLoad(float hp, int jumpPower, int speed, int money)
   {
     this.hp = hp;
     this.jumpPower = jumpPower;
@@ -47,7 +50,7 @@ public class PlayerState : MonoBehaviour
     curHp = hp;
     playerHpSlider.value = (float)curHp / (float)hp;
     playerHpText.text = string.Format("{0} / {1} ({2}%)", curHp, hp, (curHp * 100) / hp);
-  }
+  }*/
 
   public void AttackPlayer(float power)
   {

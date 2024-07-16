@@ -8,7 +8,7 @@ public class BossGamePlayerMove : MonoBehaviour
 
   Rigidbody rb;
   Collider col;
-  PlayerState playerState;
+  BossPlayerState bossPlayerState;
   private float rotSpeed = 150f;
   private float xAngle = 0f;
 
@@ -33,7 +33,7 @@ public class BossGamePlayerMove : MonoBehaviour
   {
     rb = GetComponent<Rigidbody>();
     rb.freezeRotation = true;
-    playerState = GetComponent<PlayerState>();
+    bossPlayerState = GetComponent<BossPlayerState>();
     col = GetComponent<Collider>();
     collisionMask = LayerMask.GetMask("Envirionment", "Player");
     camManager = Camera.main.GetComponent<BossGameCamManager>();
@@ -43,13 +43,13 @@ public class BossGamePlayerMove : MonoBehaviour
 
   void Update()
   {
-    if (BoasGameManager.Instance.gameState != BoasGameManager.GameState.Run)
+    if (BossGameManager.Instance.gameState != BossGameManager.GameState.Run)
     {
       return;
     }
     Rotate();
     // Damaged 상태일 시 움직임 x but 회전은 가능
-    if (playerState.isDamaged)
+    if (bossPlayerState.isDamaged)
     {
       return;
     }
@@ -61,12 +61,12 @@ public class BossGamePlayerMove : MonoBehaviour
 
   void FixedUpdate()
   {
-    if (BoasGameManager.Instance.gameState != BoasGameManager.GameState.Run)
+    if (BossGameManager.Instance.gameState != BossGameManager.GameState.Run)
     {
       return;
     }
     // Damaged 상태일 시 움직임 x
-    if (playerState.isDamaged)
+    if (bossPlayerState.isDamaged)
     {
       return;
     }
@@ -157,11 +157,11 @@ public class BossGamePlayerMove : MonoBehaviour
     dir = transform.TransformDirection(dir);
     if (isJump)
     {
-      rb.MovePosition(rb.position + dir * playerState.speed * Time.deltaTime * 0.65f);
+      rb.MovePosition(rb.position + dir * Server.Instance.playerInfo.Speed * Time.deltaTime * 0.65f);
     }
     else
     {
-      rb.MovePosition(rb.position + dir * playerState.speed * Time.deltaTime * 0.8f);
+      rb.MovePosition(rb.position + dir * Server.Instance.playerInfo.Speed * Time.deltaTime * 0.8f);
     }
 
     //rb.AddForce(dir*playerData.speed*Time.deltaTime,ForceMode.Impulse);
@@ -194,7 +194,7 @@ public class BossGamePlayerMove : MonoBehaviour
     {
       isJumpMotion = true;
       animator.SetTrigger("RunToJump");
-      rb.AddForce(Vector3.up * playerState.jumpPower * 1.5f, ForceMode.Impulse);
+      rb.AddForce(Vector3.up * Server.Instance.playerInfo.JumpPower * 1.5f, ForceMode.Impulse);
     }
 
     if (CheckCollisionBelow())
