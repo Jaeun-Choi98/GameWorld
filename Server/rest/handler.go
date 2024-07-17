@@ -18,6 +18,7 @@ type HandlerInterface interface {
 	SignIn(c *gin.Context)
 	SignUp(c *gin.Context)
 	SavePlayerInfo(c *gin.Context)
+	GetItemInfo(c *gin.Context)
 }
 
 type Handler struct {
@@ -108,4 +109,16 @@ func (h *Handler) SavePlayerInfo(c *gin.Context) {
 		return
 	}
 	c.JSON(http.StatusOK, player)
+}
+
+func (h *Handler) GetItemInfo(c *gin.Context) {
+	var items []models.Item
+
+	result := h.db.Find(&items)
+	if result.Error != nil {
+		log.Println(result.Error)
+		c.JSON(http.StatusBadRequest, gin.H{"error": result.Error})
+		return
+	}
+	c.JSON(http.StatusOK, items)
 }

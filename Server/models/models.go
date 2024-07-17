@@ -18,6 +18,14 @@ type Player struct {
 	Inventory  Inventory `gorm:"column:inventory;foreignKey:ItemId;references:player_id" json:"inventory"`
 }
 
+type Item struct {
+	ItemId      uint   `gorm:"column:item_id" json:"itemId"`
+	ItemName    string `gorm: "column:item_name" json:"itemName"`
+	Price       int    `gorm: "column:price" json:"price"`
+	ItemType    string `gorm: "column:item_type" json:"itemType"`
+	Description string `gorom: "column:description" json:"description"`
+}
+
 type InventoryItem struct {
 	ItemId   int
 	Quantity int
