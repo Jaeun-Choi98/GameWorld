@@ -18,7 +18,7 @@ public class Player
   public int userId;
   public int playerId;
   public PlayerInfo playerInfo;
-  public Inventory[] inventory;
+  public List<Inventory> inventory;
 }
 
 [System.Serializable]
@@ -38,6 +38,16 @@ public class Inventory
   public string ItemName;
 }
 
+[System.Serializable]
+public class Item
+{
+  public int itemId;
+  public int price;
+  public string itemName;
+  public string itemType;
+  public string description;
+}
+
 public class Server : MonoBehaviour
 {
   private static Server instance = null;
@@ -48,7 +58,9 @@ public class Server : MonoBehaviour
 
   public PlayerInfo playerInfo;
 
-  public Inventory[] inventory;
+  public List<Inventory> inventory = new List<Inventory>();
+
+  public List<Item> items = new List<Item>();
 
   public static Server Instance
   {
@@ -78,7 +90,7 @@ public class Server : MonoBehaviour
   private void Start()
   {
     // 실제 실행 시 삭제
-    //InitDev();
+    InitDev();
   }
 
   private void InitDev()
@@ -92,6 +104,27 @@ public class Server : MonoBehaviour
     player.userId = 1;
     player.playerId = 1;
     player.playerInfo = playerInfo;
+    
+    Inventory inventory1 = new Inventory();
+    Inventory inventory2 = new Inventory();
+    inventory1.ItemId = 1;
+    inventory1.ItemName = "sword";
+    inventory1.Quantity = 1;
+    inventory2.ItemId = 2;
+    inventory2.ItemName = "arrow";
+    inventory2.Quantity = 1;
+    inventory.Add(inventory1);
+    inventory.Add(inventory2);
+
+    // 이후에 로그인 씬에서 로그인 할 때 서버에서 모든 정보를 긁어와야 함. ( GetItemsInfo api 설계 )
+    Item item1 = new Item();
+    Item item2 = new Item();
+    item1.itemId = 1;
+    item1.itemName = "sword";
+    item2.itemId = 2;
+    item2.itemName = "arrow";
+    items.Add(item1);
+    items.Add(item2);
   }
 
   public void SaveBossGameData(int userId, int playerId, string name, int money, int speed, int jumpPower)
