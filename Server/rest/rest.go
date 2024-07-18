@@ -19,5 +19,7 @@ func RunWithHandler(address string, h HandlerInterface) error {
 	r.POST("/players/signup", h.SignUp)
 	r.POST("/players/save-playerinfo", h.SavePlayerInfo)
 	r.GET("/items/load-iteminfo", h.GetItemInfo)
+	r.POST("/players/save-playerinventory", h.SavePlayerInventory)
+	r.POST("/players/save-playerinfo-playerinventory", h.SavePlayerInfoAndInventory)
 	return r.Run(address)
 }

@@ -27,6 +27,7 @@ public class PlatformPlayerState : MonoBehaviour
   void Update()
   {
     nameText.transform.position = gameObject.transform.position + offset;
+    moneyText.text = "¿Á»≠: " + Server.Instance.playerInfo.Money;
   }
 
  /* public void PlatformPlayerStateLoad(int speed, int money, int jumpPower, string name)

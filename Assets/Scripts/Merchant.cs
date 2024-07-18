@@ -20,6 +20,7 @@ public class Merchant : MonoBehaviour
   [SerializeField]
   private GameObject imageF;
 
+
   public void OpenStore()
   {
     merchantCamera.SetActive(true);
@@ -31,6 +32,8 @@ public class Merchant : MonoBehaviour
   public void CloseStore()
   {
     merchantCamera.SetActive(false);
+    // Notify 코루틴 때문
+    StopAllCoroutines();
     shopUI.SetActive(false);
     isUseStore = false;
     if (isAvailable)

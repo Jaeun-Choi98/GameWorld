@@ -19,6 +19,8 @@ type HandlerInterface interface {
 	SignUp(c *gin.Context)
 	SavePlayerInfo(c *gin.Context)
 	GetItemInfo(c *gin.Context)
+	SavePlayerInventory(c *gin.Context)
+	SavePlayerInfoAndInventory(c *gin.Context)
 }
 
 type Handler struct {
@@ -96,7 +98,6 @@ func (h *Handler) SignUp(c *gin.Context) {
 func (h *Handler) SavePlayerInfo(c *gin.Context) {
 	var player models.Player
 	err := c.ShouldBindJSON(&player)
-	log.Println(player)
 	if err != nil {
 		log.Println(err)
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
@@ -121,4 +122,40 @@ func (h *Handler) GetItemInfo(c *gin.Context) {
 		return
 	}
 	c.JSON(http.StatusOK, items)
+}
+
+func (h *Handler) SavePlayerInventory(c *gin.Context) {
+	var player models.Player
+	err := c.ShouldBindJSON(&player)
+	if err != nil {
+		log.Println(err)
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+	result := h.db.Model(&player).Where("user_id = ? and player_id = ?", player.UserId, player.PlyerId).
+		Update("inventory", player.Inventory)
+	if result.Error != nil {
+		log.Println(result.Error)
+		c.JSON(http.StatusBadRequest, gin.H{"error": result.Error})
+		return
+	}
+	c.JSON(http.StatusOK, player)
+}
+
+func (h *Handler) SavePlayerInfoAndInventory(c *gin.Context) {
+	var player models.Player
+	err := c.ShouldBindJSON(&player)
+	if err != nil {
+		log.Println(err)
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+	result := h.db.Model(&player).Where("user_id = ? and player_id = ?", player.UserId, player.PlyerId).
+		Updates(models.Player{PlayerInfo: player.PlayerInfo, Inventory: player.Inventory})
+	if result.Error != nil {
+		log.Println(result.Error)
+		c.JSON(http.StatusBadRequest, gin.H{"error": result.Error})
+		return
+	}
+	c.JSON(http.StatusOK, player)
 }

@@ -4,6 +4,33 @@ using UnityEngine;
 
 public class InventoryManager : MonoBehaviour
 {
+  private static InventoryManager instance = null;
+
+  public static InventoryManager Instance
+  {
+    get
+    {
+      if (instance == null)
+      {
+        return null;
+      }
+      return instance;
+    }
+  }
+
+  private void Awake()
+  {
+    if (instance == null)
+    {
+      instance = this;
+      DontDestroyOnLoad(gameObject);
+    }
+    else
+    {
+      Destroy(gameObject);
+    }
+  }
+
   public int maxSize = 10;
 
   [SerializeField]
@@ -19,7 +46,7 @@ public class InventoryManager : MonoBehaviour
 
   public bool AddItem(Item item)
   {
-    if (Server.Instance.inventory.Count < maxSize)
+    if (Server.Instance.inventory != null && Server.Instance.inventory.Count < maxSize)
     {
       bool exist = false;
       foreach (var i in Server.Instance.inventory)

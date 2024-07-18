@@ -5,8 +5,10 @@ using UnityEngine.UI;
 
 public class InventoryPanel : MonoBehaviour
 {
-  public GameObject slotPrefabs;
-  public Transform slotContainer;
+  [SerializeField]
+  private GameObject slotPrefabs;
+  [SerializeField]
+  private Transform slotContainer;
 
   [SerializeField]
   private float spacing = 50f;
@@ -32,7 +34,7 @@ public class InventoryPanel : MonoBehaviour
         Destroy(child.gameObject);
       }
     }
-    
+
     offsetX = 100f; offsetY = -100f;
     foreach (Inventory i in Server.Instance.inventory)
     {
@@ -44,7 +46,7 @@ public class InventoryPanel : MonoBehaviour
 
       RectTransform rectTransform = newSlot.GetComponent<RectTransform>();
       rectTransform.anchoredPosition = new Vector2(offsetX, offsetY);
-      if (offsetX >= 1900)
+      if (offsetX >= 780)
       {
         offsetX = spacing;
         offsetY -= (rectTransform.sizeDelta.y + spacing);

@@ -53,7 +53,7 @@ public class Server : MonoBehaviour
   private static Server instance = null;
 
   public User user;
-  
+
   public Player player;
 
   public PlayerInfo playerInfo;
@@ -90,7 +90,10 @@ public class Server : MonoBehaviour
   private void Start()
   {
     // 실제 실행 시 삭제
-    InitDev();
+    //InitDev();
+    LoadPlayerData(1);
+
+    LoadItemData();
   }
 
   private void InitDev()
@@ -104,7 +107,7 @@ public class Server : MonoBehaviour
     player.userId = 1;
     player.playerId = 1;
     player.playerInfo = playerInfo;
-    
+
     Inventory inventory1 = new Inventory();
     Inventory inventory2 = new Inventory();
     inventory1.ItemId = 1;
@@ -191,7 +194,62 @@ public class Server : MonoBehaviour
       player = JsonConvert.DeserializeObject<Player>(jsonResponse);
       playerInfo = player.playerInfo;
       user.userId = userId;
+      if (player.inventory == null)
+      {
+        player.inventory = new List<Inventory>();
+      }
       inventory = player.inventory;
+    }
+  }
+
+  public void LoadItemData()
+  {
+    StartCoroutine(LoadItemDataProcess());
+  }
+
+  IEnumerator LoadItemDataProcess()
+  {
+    string url = "localhost:8080/items/load-iteminfo";
+    UnityWebRequest request = new UnityWebRequest(url, "GET");
+    request.downloadHandler = new DownloadHandlerBuffer();
+    yield return request.SendWebRequest();
+    if (request.result == UnityWebRequest.Result.ConnectionError || request.result == UnityWebRequest.Result.ProtocolError)
+    {
+      Debug.LogError("Error: " + request.error);
+      yield break;
+    }
+    else
+    {
+      string jsonResponse = request.downloadHandler.text;
+      //Debug.Log(jsonResponse);
+      items = JsonConvert.DeserializeObject<List<Item>>(jsonResponse);
+    }
+  }
+
+  public void SavePlayerInfoAndInventory()
+  {
+    StartCoroutine(SavePlayerInfoAndInventoryProcess());
+  }
+
+  IEnumerator SavePlayerInfoAndInventoryProcess()
+  {
+    string url = "localhost:8080/players/save-playerinfo-playerinventory";
+    UnityWebRequest request = new UnityWebRequest(url, "POST");
+    string jsonStr = JsonConvert.SerializeObject(player);
+    byte[] jsonStrToByte = new System.Text.UTF8Encoding().GetBytes(jsonStr);
+    request.uploadHandler = new UploadHandlerRaw(jsonStrToByte);
+    request.downloadHandler = new DownloadHandlerBuffer();
+
+    yield return request.SendWebRequest();
+
+    if (request.result == UnityWebRequest.Result.ConnectionError || request.result == UnityWebRequest.Result.ProtocolError)
+    {
+      Debug.LogError("Error: " + request.error);
+    }
+    else
+    {
+      string jsonResponse = request.downloadHandler.text;
+      Player responseObj = JsonConvert.DeserializeObject<Player>(jsonResponse);
     }
   }
 }
