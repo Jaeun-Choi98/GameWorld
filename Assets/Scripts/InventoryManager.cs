@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class InventoryManager : MonoBehaviour
 {
-  private static InventoryManager instance = null;
+  /*private static InventoryManager instance = null;
 
   public static InventoryManager Instance
   {
@@ -29,7 +29,7 @@ public class InventoryManager : MonoBehaviour
     {
       Destroy(gameObject);
     }
-  }
+  }*/
 
   public int maxSize = 10;
 
@@ -69,19 +69,19 @@ public class InventoryManager : MonoBehaviour
     return false;
   }
 
-  public void RemoveItem(Item item)
+  public void RemoveItem(int itemId)
   {
-    foreach (var i in Server.Instance.inventory)
+    for (int i=0;i<Server.Instance.inventory.Count;i++)
     {
-      if (i.ItemId == item.itemId)
+      if (Server.Instance.inventory[i].ItemId == itemId)
       {
-        if(i.Quantity > 1)
+        if (Server.Instance.inventory[i].Quantity > 1)
         {
-          i.Quantity -= 1;
+          Server.Instance.inventory[i].Quantity -= 1;
         }
         else
         {
-          Server.Instance.inventory.Remove(i);
+          Server.Instance.inventory.Remove(Server.Instance.inventory[i]);
         }
       }
     }

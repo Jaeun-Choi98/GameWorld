@@ -62,6 +62,8 @@ public class Server : MonoBehaviour
 
   public List<Item> items = new List<Item>();
 
+  public Dictionary<int, int> dicItemPrice = new Dictionary<int, int>();
+
   public static Server Instance
   {
     get
@@ -90,10 +92,10 @@ public class Server : MonoBehaviour
   private void Start()
   {
     // 실제 실행 시 삭제
-    //InitDev();
-    LoadPlayerData(1);
+    InitDev();
+    //LoadPlayerData(1);
 
-    LoadItemData();
+    //LoadItemData();
   }
 
   private void InitDev()
@@ -124,10 +126,23 @@ public class Server : MonoBehaviour
     Item item2 = new Item();
     item1.itemId = 1;
     item1.itemName = "sword";
+    item1.price = 1000;
+    item1.itemType = "weapon";
     item2.itemId = 2;
     item2.itemName = "arrow";
+    item2.price = 1000;
+    item2.itemType = "weapon";
+    Item item3 = new Item();
+    item3.itemId = 3;
+    item3.itemName = "Potion";
+    item3.price = 100;
+    item3.itemType = "consumption";
     items.Add(item1);
     items.Add(item2);
+    items.Add(item3);
+    dicItemPrice.Add(item1.itemId, item1.price);
+    dicItemPrice.Add(item2.itemId, item2.price);
+    dicItemPrice.Add(item3.itemId, item3.price);
   }
 
   public void SaveBossGameData(int userId, int playerId, string name, int money, int speed, int jumpPower)
@@ -223,6 +238,10 @@ public class Server : MonoBehaviour
       string jsonResponse = request.downloadHandler.text;
       //Debug.Log(jsonResponse);
       items = JsonConvert.DeserializeObject<List<Item>>(jsonResponse);
+      foreach (Item item in items)
+      {
+        dicItemPrice.Add(item.itemId, item.price);
+      }
     }
   }
 
