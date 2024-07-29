@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 4821832437337945655}
   - component: {fileID: 1508453144327418492}
   - component: {fileID: 1526808166751029551}
-  - component: {fileID: -1287368809043475236}
   m_Layer: 5
   m_Name: Shop Slot
   m_TagString: Untagged
@@ -123,18 +122,6 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &-1287368809043475236
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 817051482820178740}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 20fc02ba1fc09e845beb7c7d7bfc24f5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &2595313735139289025
 GameObject:
   m_ObjectHideFlags: 0
