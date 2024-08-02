@@ -8,7 +8,6 @@ public class PlatformPlayerState : MonoBehaviour
   public int money;
   public int jumpPower = 0;
   public int speed = 0;
-  public string name;
 
   [SerializeField]
   private Text nameText;
