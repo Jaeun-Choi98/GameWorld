@@ -1,11 +1,8 @@
 using Newtonsoft.Json;
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.IO;
 using System.Net.Sockets;
 using System.Text;
-using UnityEditor.VersionControl;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -65,7 +62,7 @@ public class TCPChatClient : MonoBehaviour
       if (isChatOn)
       {
         Debug.Log(chatInput.text);
-        SendMessage(chatInput.text + "\n");
+        SendMessage(chatInput.text);
         chatInput.text = "";
         chatUI.gameObject.SetActive(false);
       }
@@ -115,7 +112,7 @@ public class TCPChatClient : MonoBehaviour
       SendMessage(new Message
       {
         type = "SET_NAME",
-        payload = new SetNamePayload { name = Server.Instance.playerInfo.Name + "\n" }
+        payload = new SetNamePayload { name = Server.Instance.playerInfo.Name }
       });
     }
     catch (Exception e)
@@ -143,7 +140,7 @@ public class TCPChatClient : MonoBehaviour
     }
   }
 
-  void SendMessage(string chatMsg)
+  new void SendMessage(string chatMsg)
   {
     SendMessage(new Message
     {

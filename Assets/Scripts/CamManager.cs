@@ -19,6 +19,9 @@ public class CamManager : MonoBehaviour
   private float svYAngle;
   private float svXAngle;
 
+  [SerializeField]
+  private TCPChatClient TCPchat;
+
   public enum VeiwPoint
   {
     fix,
@@ -34,6 +37,7 @@ public class CamManager : MonoBehaviour
 
   void Update()
   {
+    if (TCPchat.isChatOn) return;
     Rotate();
     CamPosition();
     if (Input.GetKey(KeyCode.RightAlt))

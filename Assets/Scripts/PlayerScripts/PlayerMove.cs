@@ -24,6 +24,9 @@ public class PlayerMove : MonoBehaviour
 
   public bool isJumpMotion = false;
 
+  [SerializeField]
+  private TCPChatClient TCPchat;
+
   void Start()
   {
     rb = GetComponent<Rigidbody>();
@@ -37,6 +40,7 @@ public class PlayerMove : MonoBehaviour
 
   void Update()
   {
+    if (TCPchat.isChatOn) return;
     Rotate();
     Jump();
     Roll();
@@ -46,6 +50,7 @@ public class PlayerMove : MonoBehaviour
 
   void FixedUpdate()
   {
+    if (TCPchat.isChatOn) return;
     Move();
   }
 

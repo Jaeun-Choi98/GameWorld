@@ -92,10 +92,10 @@ public class Server : MonoBehaviour
   private void Start()
   {
     // 실제 실행 시 삭제
-    InitDev();
+    //InitDev();
     //LoadPlayerData(1);
 
-    //LoadItemData();
+    LoadItemData();
   }
 
   private void InitDev()
