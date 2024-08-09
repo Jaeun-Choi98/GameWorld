@@ -11,7 +11,7 @@ public class PlayerManager : MonoBehaviour
   private GameObject playerFactory;
 
   [SerializeField]
-  private Dictionary<int, GameObject> players = new Dictionary<int, GameObject>();
+  private Dictionary<int, OtherPlayerController> players = new Dictionary<int, OtherPlayerController>();
 
   [SerializeField]
   private TCPClient tcpClient;
@@ -29,8 +29,9 @@ public class PlayerManager : MonoBehaviour
       type = "CONNECT",
       payload = new { playerId = Server.Instance.player.playerId }
     });
+    tcpClient.SendPlayerTransform();
     GameObject player = Instantiate(playerFactory, spawnPosition, Quaternion.identity);
-    players[playerId] = player;
+    players[playerId] = player.GetComponent<OtherPlayerController>();
 
   }
 
@@ -38,21 +39,16 @@ public class PlayerManager : MonoBehaviour
   {
     if (players.ContainsKey(playerId))
     {
-      Destroy(players[playerId]);
+      Destroy(players[playerId].gameObject);
       players.Remove(playerId);
     }
   }
 
   public void UpdatePlayerTransform(PlayerTransformPayload transform)
   {
-    Vector3 position = new Vector3(transform.position[0], transform.position[1], transform.position[2]);
-    Quaternion rotation = new Quaternion(transform.rotation[0], transform.rotation[1], transform.rotation[2], transform.rotation[3]);
     if (players.ContainsKey(transform.playerId))
     {
-      players[transform.playerId].transform.position = position;
-      players[transform.playerId].transform.rotation = rotation;
-      /*players[transform.playerId].transform.position = Vector3.Lerp(players[transform.playerId].transform.position, position, 10f * Time.deltaTime);
-      players[transform.playerId].transform.rotation = Quaternion.Lerp(players[transform.playerId].transform.rotation, rotation, 5f * Time.deltaTime);*/
+      players[transform.playerId].UpdateTransform(transform);
     }
   }
 }

@@ -5017,6 +5017,7 @@ MonoBehaviour:
   playerManager: {fileID: 1130857563}
   sendRate: 0.1
   positionThreshold: 0.1
+  playerMove: {fileID: 1919391551}
 --- !u!1 &1929947944
 GameObject:
   m_ObjectHideFlags: 0

@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 8232033767205436357}
   - component: {fileID: 8968401513682060316}
   - component: {fileID: 8673038464069962901}
+  - component: {fileID: 4735831783285628084}
   m_Layer: 0
   m_Name: OtherPlayer
   m_TagString: Untagged
@@ -108,6 +109,18 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &4735831783285628084
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4513828832846986089}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dba69618c133eb54285248076b1ff841, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &6242825237763185838
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -160,6 +173,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 9500000, guid: 317a56890b5c8e74ab1d492a2c7fb608, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: f50d3220217a2ff4ca6ca5f3b97cf033, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

@@ -14,6 +14,10 @@ public class PlayerTransformPayload
   public int playerId;
   public float[] position;
   public float[] rotation;
+  public bool isJump;
+  public bool isRoll;
+  public float h;
+  public float v;
 }
 
 [System.Serializable]
@@ -42,9 +46,19 @@ public class TCPClient : MonoBehaviour
   private float sendRate = 0.1f;
   private float nextSendTime;
 
+  [SerializeField]
+  private float consistanceSendRate = 2f;
+  private float consistanceNextTime;
+
   private Vector3 lastSentPosition;
   [SerializeField]
   private float positionThreshold = 0.1f; // 위치 변화 임계값
+  private Quaternion lastSentRotation;
+  [SerializeField]
+  private float rotationThreshold = 0.1f;
+
+  [SerializeField]
+  private PlayerMove playerMove;
 
   void Start()
   {
@@ -66,11 +80,21 @@ public class TCPClient : MonoBehaviour
     if (Time.time >= nextSendTime)
     {
       nextSendTime = Time.time * sendRate;
-      if (Vector3.Distance(transform.position, lastSentPosition) > positionThreshold)
+      if (Vector3.Distance(transform.position, lastSentPosition) > positionThreshold || 
+        Quaternion.Angle(transform.rotation, lastSentRotation) > rotationThreshold)
       {
         SendPlayerTransform();
         lastSentPosition = transform.position;
+        lastSentRotation = transform.rotation;
       }
+    }
+
+    if (Time.time >= consistanceNextTime)
+    {
+      consistanceNextTime = Time.time * consistanceSendRate;
+      SendPlayerTransform();
+      lastSentPosition = transform.position;
+      lastSentRotation = transform.rotation;
     }
   }
 
@@ -146,7 +170,7 @@ public class TCPClient : MonoBehaviour
     }
   }
 
-  void SendPlayerTransform()
+  public void SendPlayerTransform()
   {
     Vector3 position = transform.position;
     Quaternion rotation = transform.rotation;
@@ -155,7 +179,11 @@ public class TCPClient : MonoBehaviour
     {
       playerId = Server.Instance.player.playerId,
       position = new float[] { position.x, position.y, position.z },
-      rotation = new float[] { rotation.x, rotation.y, rotation.z, rotation.w }
+      rotation = new float[] { rotation.x, rotation.y, rotation.z, rotation.w },
+      isJump = playerMove.isJump,
+      isRoll = playerMove.isRoll,
+      h = playerMove.h,
+      v = playerMove.v,
     };
 
     SendMessageToServer(new Message

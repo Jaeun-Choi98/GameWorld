@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlayerMove : MonoBehaviour
 {
-  private float h, v;
+  
 
   Rigidbody rb;
   Collider col;
@@ -15,10 +15,13 @@ public class PlayerMove : MonoBehaviour
   CamManager camManager;
 
   private LayerMask collisionMask;
-  [SerializeField]
-  private bool isJump = false;
-  [SerializeField]
-  private bool isRoll = false;
+
+  // 서버에 데이터를 보내기 위해 제한자를 public으로 (TCPClient 클래스)
+  //[SerializeField]
+  public bool isJump = false;
+  //[SerializeField]
+  public bool isRoll = false;
+  public float h, v;
 
   Animator animator;
 
