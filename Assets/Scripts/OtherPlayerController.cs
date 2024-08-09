@@ -18,8 +18,10 @@ public class OtherPlayerController : MonoBehaviour
   {
     Vector3 position = new Vector3(playerTransform.position[0], playerTransform.position[1], playerTransform.position[2]);
     Quaternion rotation = new Quaternion(playerTransform.rotation[0], playerTransform.rotation[1], playerTransform.rotation[2], playerTransform.rotation[3]);
-    transform.position = position;
     transform.rotation = rotation;
+    transform.position = position;
+    transform.GetChild(0).transform.localPosition = new Vector3(0, -1, 0);
+    
     h = playerTransform.h;
     v = playerTransform.v;
 
